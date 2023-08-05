@@ -1,0 +1,10 @@
+Vagrantfile
+global.sol
+action_provision
+action_set_name
+box_meta
+creator_uid
+id
+index_uuid
+vagrant_cwd
+loader.rb
