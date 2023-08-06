@@ -178,3 +178,30 @@ def places_search():
         places.append(d)
 
     return jsonify(places)
+
+@app_views.route('/places_search', methods=['GET'], strict_slashes=False)
+@swag_from('documentation/place/get_search.yml', methods=['GET'])
+def get_place_search():
+    """A end point to retrieve place search"""
+    list_places = []
+    states_obj = storage.all(State).values()
+    for state in states_obj:
+        if state:
+            for city in state.cities:
+                if city:
+                    for place in city.places:
+                        list_places.append(place)
+
+    city_obj = storage.all(City).values()
+    for city in city_obj:
+        if city:
+            for place in city.places:
+                if place not in list_places:
+                    list_places.append(place)
+
+    places = []
+    for p in list_places:
+        d = p.to_dict()
+        d.pop('amenities', None)
+        places.append(d)
+        return jsonify(places), 200
