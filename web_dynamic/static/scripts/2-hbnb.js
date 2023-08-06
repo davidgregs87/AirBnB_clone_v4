@@ -1,26 +1,21 @@
-// jQuery AJAX;
-
+// A jQuery script that listens to when a user  clicks the input checkbox, and add the checked value to the div tag
 $(document).ready(function () {
-    // Amenities event listener - OnCheck
-    const amenities = {};
+    let amenity_list = {}; // Initialize an empty dictionary for selected amenities
 
-    function amenityListener() {
-        const checkedAmenities = Object.values(amenities).join(', ');
-        $('.amenities > h4').text(checkedAmenities);
-    }
+    // Attach an event listener to the checkboxes
+    $('.amenity-checkbox').change(function () {
+        amenity_list = {}; // Clear the dictionary before rebuilding it
 
-    $('.amenities input[type="checkbox"]').on('change', function () {
-        const $checkbox = $(this);
-        const id = $checkbox.parent().data('id');
-        const name = $checkbox.parent().data('name');
+        // Loop through all checked checkboxes
+        $('.amenity-checkbox:checked').each(function () {
+            let amenity_id = $(this).data('id');
+            let amenity_name = $(this).data('name');
+            amenity_list[amenity_id] = amenity_name; // Store the Amenity ID and name in the dictionary
+        });
 
-        if ($checkbox.is(':checked')) {
-            amenities[id] = name;
-        } else {
-            delete amenities[id];
-        }
-
-        amenityListener();
+        // Update the h4 tag with the list of selected amenities
+        let amenity_items = Object.values(amenity_list).join(', ');
+        $('.amenities h4').text(amenity_items);
     });
 
     // API status function:
